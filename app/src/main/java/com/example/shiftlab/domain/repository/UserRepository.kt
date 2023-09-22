@@ -1,8 +1,8 @@
 package com.example.shiftlab.domain.repository
 
-import com.example.shiftlab.domain.model.Username
+import com.example.shiftlab.domain.model.User
 
 interface UserRepository {
-    fun saveUsername(username: Username)
-    fun getUsername(): Username?
+    fun saveUsername(user: User)
+    fun getUsername(): User?
 }

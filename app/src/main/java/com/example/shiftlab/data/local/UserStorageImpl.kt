@@ -1,24 +1,27 @@
 package com.example.shiftlab.data.local
 
 import android.content.Context
+import com.google.gson.Gson
 
-class UserStorageImpl(context: Context): UserStorage {
+class UserStorageImpl(context: Context) : UserStorage {
 
-    private val sharedPreferences = context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    private val sharedPreferences =
+        context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
+    private val gson = Gson()
 
-    override fun saveUsername(userName: UsernameEntity) {
-        sharedPreferences.edit().putString(FIRST_NAME_KEY, userName.firstName)
+    override fun saveUser(user: UserEntity) {
+        sharedPreferences.edit().putString(USER_KEY, gson.toJson(user))
             .apply()
     }
 
-    override fun getUsername(): UsernameEntity? {
-        val firstName = sharedPreferences.getString(FIRST_NAME_KEY, null)
-        return firstName?.let { UsernameEntity(it) }
+    override fun getUser(): UserEntity? {
+        val userJson = sharedPreferences.getString(USER_KEY, null)
+        return userJson?.let { gson.fromJson(it, UserEntity::class.java) }
     }
 
 
     private companion object {
         const val SHARED_PREF_NAME = "shared_pref"
-        const val FIRST_NAME_KEY = "name"
+        const val USER_KEY = "user"
     }
 }
