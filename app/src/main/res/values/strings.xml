@@ -12,7 +12,6 @@
     <string name="invalid_last_name">Not a valid last name</string>
     <string name="invalid_password">Not a valid password name</string>
     <string name="invalid_confirm_password">Password mismatch</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="initial_date">01.01.2023</string>
+    <string name="greeting">Greeting</string>
 </resources>

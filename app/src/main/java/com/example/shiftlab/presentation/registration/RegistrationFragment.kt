@@ -10,7 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import androidx.fragment.app.activityViewModels
-import com.example.shiftlab.common.mainActivity
+import com.example.shiftlab.presentation.mainActivity
 import com.example.shiftlab.databinding.FragmentRegistrationBinding
 import java.util.Calendar
 

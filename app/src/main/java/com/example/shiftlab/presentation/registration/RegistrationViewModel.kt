@@ -77,7 +77,7 @@ class RegistrationViewModel @Inject constructor(
         calendar.set(Calendar.MONTH, month)
         calendar.set(Calendar.DAY_OF_MONTH, day)
 
-        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val dateFormat = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
         val formattedDate = dateFormat.format(calendar.time)
         _state.value = RegistrationState.Content(birthday = formattedDate)
     }
@@ -96,5 +96,9 @@ class RegistrationViewModel @Inject constructor(
         )
         saveUserNameUseCase(user = user)
         _state.value = RegistrationState.Registered
+    }
+
+    private companion object {
+        const val DATE_PATTERN = "dd.MM.yyyy"
     }
 }
