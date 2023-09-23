@@ -1,0 +1,100 @@
+package com.example.shiftlab.presentation.registration
+
+import androidx.lifecycle.LiveData
+import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import com.example.shiftlab.R
+import com.example.shiftlab.domain.model.User
+import com.example.shiftlab.domain.usecase.GetUserUseCase
+import com.example.shiftlab.domain.usecase.SaveUserUseCase
+import com.example.shiftlab.domain.usecase.ValidateNameUseCase
+import com.example.shiftlab.domain.usecase.ValidatePasswordUseCase
+import dagger.hilt.android.lifecycle.HiltViewModel
+import java.text.SimpleDateFormat
+import java.util.Calendar
+import java.util.Locale
+import javax.inject.Inject
+
+@HiltViewModel
+class RegistrationViewModel @Inject constructor(
+    private val validateNameUseCase: ValidateNameUseCase,
+    private val validatePasswordUseCase: ValidatePasswordUseCase,
+    private val saveUserNameUseCase: SaveUserUseCase,
+    getUserNameUseCase: GetUserUseCase
+) : ViewModel() {
+    private val _state = MutableLiveData<RegistrationState>()
+    val state: LiveData<RegistrationState> = _state
+
+
+    init {
+        if (getUserNameUseCase() != null) {
+            _state.value = RegistrationState.Registered
+        }
+    }
+
+
+    fun send(event: RegistrationEvent) {
+        when (event) {
+            is RegistrationEvent.DataUpdatedEvent -> registrationDataUpdated(
+                event.firstName,
+                event.lastName,
+                event.password,
+                event.confirmPassword
+            )
+            is RegistrationEvent.DateChangedEvent -> dateChanged(event.year, event.month, event.day)
+            is RegistrationEvent.SaveUserEvent -> saveUser(
+                event.firstName,
+                event.lastName,
+                event.password,
+                event.birthday
+            )
+        }
+    }
+
+    private fun registrationDataUpdated(
+        firstName: String,
+        lastName: String,
+        password: String,
+        confirmPassword: String
+    ) {
+        if (!validateNameUseCase(firstName)) {
+            _state.value = RegistrationState.Error(firstNameError = R.string.invalid_first_name)
+        } else if (!validateNameUseCase(lastName)) {
+            _state.value = RegistrationState.Error(lastNameError = R.string.invalid_last_name)
+        } else if (!validatePasswordUseCase(password)) {
+            _state.value = RegistrationState.Error(passwordError = R.string.invalid_password)
+        } else if (password != confirmPassword) {
+            _state.value =
+                RegistrationState.Error(confirmPasswordError = R.string.invalid_confirm_password)
+        } else {
+            _state.value = RegistrationState.ValidatedData
+        }
+    }
+
+    private fun dateChanged(year: Int, month: Int, day: Int) {
+        val calendar = Calendar.getInstance()
+        calendar.set(Calendar.YEAR, year)
+        calendar.set(Calendar.MONTH, month)
+        calendar.set(Calendar.DAY_OF_MONTH, day)
+
+        val dateFormat = SimpleDateFormat("dd.MM.yyyy", Locale.getDefault())
+        val formattedDate = dateFormat.format(calendar.time)
+        _state.value = RegistrationState.Content(birthday = formattedDate)
+    }
+
+    private fun saveUser(
+        firstName: String,
+        lastName: String,
+        password: String,
+        birthday: String
+    ) {
+        val user = User(
+            firstName = firstName,
+            lastName = lastName,
+            password = password,
+            birthday = birthday
+        )
+        saveUserNameUseCase(user = user)
+        _state.value = RegistrationState.Registered
+    }
+}

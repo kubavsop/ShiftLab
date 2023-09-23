@@ -1,8 +1,8 @@
 package com.example.shiftlab.di
 
 import com.example.shiftlab.domain.repository.UserRepository
-import com.example.shiftlab.domain.usecase.GetUserNameUseCase
-import com.example.shiftlab.domain.usecase.SaveUserNameUseCase
+import com.example.shiftlab.domain.usecase.GetUserUseCase
+import com.example.shiftlab.domain.usecase.SaveUserUseCase
 import com.example.shiftlab.domain.usecase.ValidateNameUseCase
 import com.example.shiftlab.domain.usecase.ValidatePasswordUseCase
 import dagger.Module
@@ -20,12 +20,12 @@ class DomainModule {
     fun provideValidatePasswordUseCase() = ValidatePasswordUseCase()
 
     @Provides
-    fun provideGetUserNameUseCase(repository: UserRepository): GetUserNameUseCase {
-        return GetUserNameUseCase(repository = repository)
+    fun provideGetUserNameUseCase(repository: UserRepository): GetUserUseCase {
+        return GetUserUseCase(repository = repository)
     }
 
     @Provides
-    fun provideSaveUserNameUseCase(repository: UserRepository): SaveUserNameUseCase {
-        return SaveUserNameUseCase(repository = repository)
+    fun provideSaveUserNameUseCase(repository: UserRepository): SaveUserUseCase {
+        return SaveUserUseCase(repository = repository)
     }
 }
