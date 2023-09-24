@@ -12,15 +12,14 @@ import javax.inject.Inject
 class GreetingViewModel @Inject constructor(
     private val getUserUseCase: GetUserUseCase
 ) : ViewModel() {
-
     private val _state = MutableLiveData<GreetingState>()
     val state: LiveData<GreetingState> = _state
 
-    fun getUser() {
-        _state.value = GreetingState(firstName = getUserUseCase()?.firstName ?: UNKNOWN )
-    }
-
     private companion object {
         const val UNKNOWN = "unknown"
+    }
+
+    fun getUser() {
+        _state.value = GreetingState(firstName = getUserUseCase()?.firstName ?: UNKNOWN)
     }
 }

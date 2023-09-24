@@ -14,11 +14,16 @@ import com.example.shiftlab.databinding.FragmentRegistrationBinding
 
 
 class GreetingFragment : Fragment() {
-
-
     private var _binding: FragmentGreetingBinding? = null
     private val binding get() = _binding!!
     private val viewModel: GreetingViewModel by activityViewModels()
+
+    private companion object {
+        const val GREETING = "Greeting"
+        const val OK = "OK"
+        const val GREETING_START = "Hello, "
+    }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -50,11 +55,5 @@ class GreetingFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
-    }
-
-    private companion object {
-        const val GREETING = "Greeting"
-        const val OK = "OK"
-        const val GREETING_START = "Hello, "
     }
 }

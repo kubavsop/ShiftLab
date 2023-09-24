@@ -22,16 +22,19 @@ class RegistrationViewModel @Inject constructor(
     private val saveUserNameUseCase: SaveUserUseCase,
     getUserNameUseCase: GetUserUseCase
 ) : ViewModel() {
+
     private val _state = MutableLiveData<RegistrationState>()
     val state: LiveData<RegistrationState> = _state
 
+    private companion object {
+        const val DATE_PATTERN = "dd.MM.yyyy"
+    }
 
     init {
         if (getUserNameUseCase() != null) {
-            _state.value = RegistrationState.Registered
+            _state.value = RegistrationState.Registered(isRegistered = true)
         }
     }
-
 
     fun send(event: RegistrationEvent) {
         when (event) {
@@ -41,6 +44,7 @@ class RegistrationViewModel @Inject constructor(
                 event.password,
                 event.confirmPassword
             )
+
             is RegistrationEvent.DateChangedEvent -> dateChanged(event.year, event.month, event.day)
             is RegistrationEvent.SaveUserEvent -> saveUser(
                 event.firstName,
@@ -58,9 +62,9 @@ class RegistrationViewModel @Inject constructor(
         confirmPassword: String
     ) {
         if (!validateNameUseCase(firstName)) {
-            _state.value = RegistrationState.Error(firstNameError = R.string.invalid_first_name)
+            _state.value = RegistrationState.Error(firstNameError = R.string.invalid_name)
         } else if (!validateNameUseCase(lastName)) {
-            _state.value = RegistrationState.Error(lastNameError = R.string.invalid_last_name)
+            _state.value = RegistrationState.Error(lastNameError = R.string.invalid_name)
         } else if (!validatePasswordUseCase(password)) {
             _state.value = RegistrationState.Error(passwordError = R.string.invalid_password)
         } else if (password != confirmPassword) {
@@ -95,10 +99,6 @@ class RegistrationViewModel @Inject constructor(
             birthday = birthday
         )
         saveUserNameUseCase(user = user)
-        _state.value = RegistrationState.Registered
-    }
-
-    private companion object {
-        const val DATE_PATTERN = "dd.MM.yyyy"
+        _state.value = RegistrationState.Registered(isRegistered = false)
     }
 }

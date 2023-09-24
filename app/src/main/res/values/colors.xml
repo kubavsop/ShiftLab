@@ -5,5 +5,7 @@
     <color name="field_background_color">#161C22</color>
     <color name="background_color">#212931</color>
     <color name="button_color">#5ED5A8</color>
-    <color name="hint_text_color">#777777</color>
+    <color name="hint_edit_text_color">#777777</color>
+    <color name="hint_text_view_color">#A7AFB7</color>
+    <color name="status_bar_color">#808080</color>
 </resources>

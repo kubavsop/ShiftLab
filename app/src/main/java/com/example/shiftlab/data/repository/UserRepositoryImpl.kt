@@ -17,13 +17,14 @@ class UserRepositoryImpl(private val userStorage: UserStorage) : UserRepository 
 
 
 fun UserEntity.toUser(): User {
-    return User (
+    return User(
         firstName = firstName,
         lastName = lastName,
         password = password,
         birthday = birthday
     )
 }
+
 fun User.toUserEntity(): UserEntity {
     return UserEntity(
         firstName = firstName,

@@ -9,6 +9,11 @@ class UserStorageImpl(context: Context) : UserStorage {
         context.getSharedPreferences(SHARED_PREF_NAME, Context.MODE_PRIVATE)
     private val gson = Gson()
 
+    private companion object {
+        const val SHARED_PREF_NAME = "shared_pref"
+        const val USER_KEY = "user"
+    }
+
     override fun saveUser(user: UserEntity) {
         sharedPreferences.edit().putString(USER_KEY, gson.toJson(user))
             .apply()
@@ -19,9 +24,4 @@ class UserStorageImpl(context: Context) : UserStorage {
         return userJson?.let { gson.fromJson(it, UserEntity::class.java) }
     }
 
-
-    private companion object {
-        const val SHARED_PREF_NAME = "shared_pref"
-        const val USER_KEY = "user"
-    }
 }

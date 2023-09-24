@@ -8,10 +8,11 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.inputmethod.EditorInfo
 import android.widget.EditText
 import androidx.fragment.app.activityViewModels
-import com.example.shiftlab.presentation.mainActivity
 import com.example.shiftlab.databinding.FragmentRegistrationBinding
+import com.example.shiftlab.presentation.mainActivity
 import java.util.Calendar
 
 class RegistrationFragment : Fragment() {
@@ -20,7 +21,6 @@ class RegistrationFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: RegistrationViewModel by activityViewModels()
-
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -61,6 +61,11 @@ class RegistrationFragment : Fragment() {
         password.addTextChangedListener(afterTextChangedListener)
         confirmPassword.addTextChangedListener(afterTextChangedListener)
 
+        firstName.setClearFocusOnDoneClick()
+        lastName.setClearFocusOnDoneClick()
+        password.setClearFocusOnDoneClick()
+        confirmPassword.setClearFocusOnDoneClick()
+
         birthday.setOnClickListener { showDatePickerDialog() }
         binding.register.setOnClickListener {
             viewModel.send(
@@ -76,8 +81,8 @@ class RegistrationFragment : Fragment() {
 
     private fun handleState(state: RegistrationState) {
         when (state) {
-            RegistrationState.Registered -> mainActivity.signUp()
             RegistrationState.ValidatedData -> binding.register.isEnabled = true
+            is RegistrationState.Registered -> mainActivity.openGreeting(state.isRegistered)
             is RegistrationState.Error -> showError(state)
             is RegistrationState.Content -> binding.birthday.text = state.birthday
         }
@@ -108,6 +113,15 @@ class RegistrationFragment : Fragment() {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+    }
+}
+
+fun EditText.setClearFocusOnDoneClick() {
+    this.setOnEditorActionListener { _, actionId, _ ->
+        if (actionId == EditorInfo.IME_ACTION_DONE) {
+            this.clearFocus()
+        }
+        false
     }
 }
 

@@ -2,7 +2,7 @@ package com.example.shiftlab.presentation.registration
 
 
 sealed interface RegistrationState {
-    object Registered : RegistrationState
+    data class Registered(val isRegistered: Boolean) : RegistrationState
     object ValidatedData : RegistrationState
     data class Content(val birthday: String) : RegistrationState
     data class Error(
