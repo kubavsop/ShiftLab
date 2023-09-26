@@ -1,95 +1,98 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/container"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="@dimen/padding_32"
     tools:context=".presentation.registration.RegistrationFragment">
 
-    <TextView
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:fontFamily="@font/montserrat_bold"
-        android:text="@string/sign_up"
-        android:textColor="@color/white"
-        android:textSize="@dimen/title_text_size"
-        app:layout_constraintBottom_toTopOf="@id/firstName"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        android:padding="@dimen/padding_32">
 
-    <EditText
-        android:id="@+id/firstName"
-        style="@style/edit_text_style"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/first_margin_top"
-        android:hint="@string/first_name_hint"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:fontFamily="@font/montserrat_bold"
+            android:text="@string/sign_up"
+            android:textColor="@color/white"
+            android:textSize="@dimen/title_text_size"
+            app:layout_constraintBottom_toTopOf="@id/firstName"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-    <EditText
-        android:id="@+id/lastName"
-        style="@style/edit_text_style"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/margin_top_12"
-        android:hint="@string/last_name_hint"
-        android:inputType="text"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/firstName" />
+        <EditText
+            android:id="@+id/firstName"
+            style="@style/edit_text_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_top_96"
+            android:hint="@string/first_name_hint"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-
-    <TextView
-        android:id="@+id/birthday"
-        style="@style/field_style"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/margin_top_12"
-        android:fontFamily="@font/montserrat_regular"
-        android:gravity="start|center"
-        android:text="@string/initial_date"
-        android:textColor="@color/white"
-        android:textSize="@dimen/text_size_14"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/lastName" />
+        <EditText
+            android:id="@+id/lastName"
+            style="@style/edit_text_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_top_12"
+            android:hint="@string/last_name_hint"
+            android:inputType="text"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/firstName" />
 
 
-    <EditText
-        android:id="@+id/password"
-        style="@style/edit_text_style"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/margin_top_12"
-        android:hint="@string/password_hint"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/birthday" />
+        <TextView
+            android:id="@+id/birthday"
+            style="@style/field_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_top_12"
+            android:fontFamily="@font/montserrat_regular"
+            android:gravity="start|center"
+            android:text="@string/initial_date"
+            android:textColor="@color/white"
+            android:textSize="@dimen/text_size_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/lastName" />
 
-    <EditText
-        android:id="@+id/confirm_password"
-        style="@style/edit_text_style"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/margin_top_12"
-        android:hint="@string/repeat_password_hint"
-        android:inputType="textPassword"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/password" />
 
-    <Button
-        android:id="@+id/register"
-        style="@style/button_style"
-        android:layout_width="0dp"
-        android:layout_marginTop="@dimen/margin_top_12"
-        android:enabled="false"
-        android:text="@string/sign_up"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/confirm_password"
-        app:layout_constraintVertical_bias="0.2" />
+        <EditText
+            android:id="@+id/password"
+            style="@style/edit_text_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_top_12"
+            android:hint="@string/password_hint"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/birthday" />
 
-</androidx.constraintlayout.widget.ConstraintLayout>
+        <EditText
+            android:id="@+id/confirm_password"
+            style="@style/edit_text_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_top_12"
+            android:hint="@string/repeat_password_hint"
+            android:inputType="textPassword"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/password" />
+
+        <Button
+            android:id="@+id/register"
+            style="@style/button_style"
+            android:layout_width="0dp"
+            android:layout_marginTop="@dimen/margin_top_40"
+            android:enabled="false"
+            android:text="@string/sign_up"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/confirm_password" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</ScrollView>

@@ -1,7 +1,8 @@
 <resources>
     <dimen name="padding_16">16dp</dimen>
     <dimen name="padding_32">32dp</dimen>
-    <dimen name="first_margin_top">96dp</dimen>
+    <dimen name="margin_top_96">96dp</dimen>
+    <dimen name="margin_top_40">40dp</dimen>
     <dimen name="margin_top_12">12dp</dimen>
 
     <dimen name="edit_text_radius">12dp</dimen>
