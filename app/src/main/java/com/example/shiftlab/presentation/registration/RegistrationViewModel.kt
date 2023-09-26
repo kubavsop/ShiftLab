@@ -5,6 +5,7 @@ import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.example.shiftlab.R
 import com.example.shiftlab.domain.model.User
+import com.example.shiftlab.domain.usecase.FormatDateUseCase
 import com.example.shiftlab.domain.usecase.GetUserUseCase
 import com.example.shiftlab.domain.usecase.SaveUserUseCase
 import com.example.shiftlab.domain.usecase.ValidateNameUseCase
@@ -20,6 +21,7 @@ class RegistrationViewModel @Inject constructor(
     private val validateNameUseCase: ValidateNameUseCase,
     private val validatePasswordUseCase: ValidatePasswordUseCase,
     private val saveUserNameUseCase: SaveUserUseCase,
+    private val formatDateUseCase: FormatDateUseCase,
     getUserNameUseCase: GetUserUseCase
 ) : ViewModel() {
 
@@ -27,7 +29,6 @@ class RegistrationViewModel @Inject constructor(
     val state: LiveData<RegistrationState> = _state
 
     private companion object {
-        const val DATE_PATTERN = "dd.MM.yyyy"
         const val DATE_OF_BIRTH = "Date of birth is "
     }
 
@@ -77,14 +78,7 @@ class RegistrationViewModel @Inject constructor(
     }
 
     private fun dateChanged(year: Int, month: Int, day: Int) {
-        val calendar = Calendar.getInstance()
-        calendar.set(Calendar.YEAR, year)
-        calendar.set(Calendar.MONTH, month)
-        calendar.set(Calendar.DAY_OF_MONTH, day)
-
-        val dateFormat = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
-        val formattedDate = dateFormat.format(calendar.time)
-        _state.value = RegistrationState.Content(birthday = DATE_OF_BIRTH + formattedDate)
+        _state.value = RegistrationState.Content(birthday = DATE_OF_BIRTH + formatDateUseCase(year, month, day))
     }
 
     private fun saveUser(

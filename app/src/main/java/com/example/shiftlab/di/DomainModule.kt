@@ -1,6 +1,7 @@
 package com.example.shiftlab.di
 
 import com.example.shiftlab.domain.repository.UserRepository
+import com.example.shiftlab.domain.usecase.FormatDateUseCase
 import com.example.shiftlab.domain.usecase.GetUserUseCase
 import com.example.shiftlab.domain.usecase.SaveUserUseCase
 import com.example.shiftlab.domain.usecase.ValidateNameUseCase
@@ -18,6 +19,8 @@ class DomainModule {
 
     @Provides
     fun provideValidatePasswordUseCase() = ValidatePasswordUseCase()
+    @Provides
+    fun provideFormatDateUseCase() = FormatDateUseCase()
 
     @Provides
     fun provideGetUserNameUseCase(repository: UserRepository): GetUserUseCase {
