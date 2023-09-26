@@ -28,6 +28,7 @@ class RegistrationViewModel @Inject constructor(
 
     private companion object {
         const val DATE_PATTERN = "dd.MM.yyyy"
+        const val DATE_OF_BIRTH = "Date of birth is "
     }
 
     init {
@@ -83,7 +84,7 @@ class RegistrationViewModel @Inject constructor(
 
         val dateFormat = SimpleDateFormat(DATE_PATTERN, Locale.getDefault())
         val formattedDate = dateFormat.format(calendar.time)
-        _state.value = RegistrationState.Content(birthday = formattedDate)
+        _state.value = RegistrationState.Content(birthday = DATE_OF_BIRTH + formattedDate)
     }
 
     private fun saveUser(

@@ -21,7 +21,6 @@ class GreetingFragment : Fragment() {
     private companion object {
         const val GREETING = "Greeting"
         const val OK = "OK"
-        const val GREETING_START = "Hello, "
     }
 
     override fun onCreateView(
@@ -43,7 +42,7 @@ class GreetingFragment : Fragment() {
             .create()
 
         viewModel.state.observe(viewLifecycleOwner) {
-            greeting.setMessage(GREETING_START + it.firstName)
+            greeting.setMessage(it.greeting)
         }
 
         binding.greetingButton.setOnClickListener {

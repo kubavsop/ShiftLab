@@ -17,9 +17,11 @@ class GreetingViewModel @Inject constructor(
 
     private companion object {
         const val UNKNOWN = "unknown"
+        const val GREETING_START = "Hello, "
     }
 
     fun getUser() {
-        _state.value = GreetingState(firstName = getUserUseCase()?.firstName ?: UNKNOWN)
+        _state.value =
+            GreetingState(greeting = GREETING_START + (getUserUseCase()?.firstName ?: UNKNOWN))
     }
 }
