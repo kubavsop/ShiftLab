@@ -11,9 +11,7 @@ import com.example.shiftlab.domain.usecase.SaveUserUseCase
 import com.example.shiftlab.domain.usecase.ValidateNameUseCase
 import com.example.shiftlab.domain.usecase.ValidatePasswordUseCase
 import dagger.hilt.android.lifecycle.HiltViewModel
-import java.text.SimpleDateFormat
 import java.util.Calendar
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -25,63 +23,52 @@ class RegistrationViewModel @Inject constructor(
     getUserNameUseCase: GetUserUseCase
 ) : ViewModel() {
 
-    private val _state = MutableLiveData<RegistrationState>()
-    val state: LiveData<RegistrationState> = _state
+    private val _registrationState = MutableLiveData<RegistrationState>()
+    val registrationState: LiveData<RegistrationState> = _registrationState
 
-    private companion object {
-        const val DATE_OF_BIRTH = "Date of birth is "
-    }
+    private val _errorState = MutableLiveData<ErrorState>()
+    val errorState: LiveData<ErrorState> = _errorState
+
+    private val _birthday = MutableLiveData(INITIAL_DATE)
+    val birthday: LiveData<String> = _birthday
+
 
     init {
         if (getUserNameUseCase() != null) {
-            _state.value = RegistrationState.Registered(isRegistered = true)
+            _registrationState.value = RegistrationState.Registered(isRegistered = true)
         }
     }
 
-    fun send(event: RegistrationEvent) {
-        when (event) {
-            is RegistrationEvent.DataUpdatedEvent -> registrationDataUpdated(
-                event.firstName,
-                event.lastName,
-                event.password,
-                event.confirmPassword
-            )
-
-            is RegistrationEvent.DateChangedEvent -> dateChanged(event.year, event.month, event.day)
-            is RegistrationEvent.SaveUserEvent -> saveUser(
-                event.firstName,
-                event.lastName,
-                event.password,
-                event.birthday
-            )
-        }
+    private companion object {
+        const val INITIAL_DATE = "01.01.2020"
     }
 
-    private fun registrationDataUpdated(
+    fun registrationDataUpdated(
         firstName: String,
         lastName: String,
         password: String,
         confirmPassword: String
     ) {
+        _registrationState.value = RegistrationState.ValidatedData(isValidate = false)
         if (!validateNameUseCase(firstName)) {
-            _state.value = RegistrationState.Error(firstNameError = R.string.invalid_name)
+            _errorState.value = ErrorState(firstNameError = R.string.invalid_name)
         } else if (!validateNameUseCase(lastName)) {
-            _state.value = RegistrationState.Error(lastNameError = R.string.invalid_name)
+            _errorState.value = ErrorState(lastNameError = R.string.invalid_name)
         } else if (!validatePasswordUseCase(password)) {
-            _state.value = RegistrationState.Error(passwordError = R.string.invalid_password)
+            _errorState.value = ErrorState(passwordError = R.string.invalid_password)
         } else if (password != confirmPassword) {
-            _state.value =
-                RegistrationState.Error(confirmPasswordError = R.string.invalid_confirm_password)
+            _errorState.value = ErrorState(confirmPasswordError = R.string.invalid_confirm_password)
         } else {
-            _state.value = RegistrationState.ValidatedData
+            _errorState.value = ErrorState()
+            _registrationState.value = RegistrationState.ValidatedData(isValidate = true)
         }
     }
 
-    private fun dateChanged(year: Int, month: Int, day: Int) {
-        _state.value = RegistrationState.Content(birthday = DATE_OF_BIRTH + formatDateUseCase(year, month, day))
+    fun dateChanged(year: Int, month: Int, day: Int) {
+        _birthday.value = formatDateUseCase(year, month, day)
     }
 
-    private fun saveUser(
+    fun saveUser(
         firstName: String,
         lastName: String,
         password: String,
@@ -94,6 +81,6 @@ class RegistrationViewModel @Inject constructor(
             birthday = birthday
         )
         saveUserNameUseCase(user = user)
-        _state.value = RegistrationState.Registered(isRegistered = false)
+        _registrationState.value = RegistrationState.Registered(isRegistered = false)
     }
 }

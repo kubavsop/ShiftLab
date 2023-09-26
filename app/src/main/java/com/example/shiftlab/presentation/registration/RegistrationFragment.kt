@@ -31,6 +31,7 @@ class RegistrationFragment : Fragment() {
         const val MAX_MONTH = 11
         const val MAX_DAY = 31
     }
+
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -48,19 +49,19 @@ class RegistrationFragment : Fragment() {
         val confirmPassword = binding.confirmPassword
         val birthday = binding.birthday
 
-        viewModel.state.observe(viewLifecycleOwner, ::handleState)
+        viewModel.errorState.observe(viewLifecycleOwner, ::handleErrorState)
+        viewModel.registrationState.observe(viewLifecycleOwner, ::handleRegistrationState)
+        viewModel.birthday.observe(viewLifecycleOwner) { binding.birthday.text = it }
 
         val afterTextChangedListener = object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
             override fun afterTextChanged(s: Editable) {
-                viewModel.send(
-                    RegistrationEvent.DataUpdatedEvent(
-                        firstName = firstName.text.toString(),
-                        lastName = lastName.text.toString(),
-                        password = password.text.toString(),
-                        confirmPassword = confirmPassword.text.toString()
-                    )
+                viewModel.registrationDataUpdated(
+                    firstName = firstName.text.toString(),
+                    lastName = lastName.text.toString(),
+                    password = password.text.toString(),
+                    confirmPassword = confirmPassword.text.toString()
                 )
             }
         }
@@ -70,7 +71,7 @@ class RegistrationFragment : Fragment() {
         val datePickerDialog = DatePickerDialog(
             requireContext(),
             { _, year, monthOfYear, dayOfMonth ->
-                viewModel.send(RegistrationEvent.DateChangedEvent(year, monthOfYear, dayOfMonth))
+                viewModel.dateChanged(year, monthOfYear, dayOfMonth)
             },
             calendar.get(Calendar.YEAR),
             calendar.get(Calendar.MONTH),
@@ -85,7 +86,6 @@ class RegistrationFragment : Fragment() {
         maxDateCalendar.set(MAX_YEAR, MAX_MONTH, MAX_DAY)
         datePickerDialog.datePicker.maxDate = maxDateCalendar.timeInMillis
 
-
         firstName.addTextChangedListener(afterTextChangedListener)
         lastName.addTextChangedListener(afterTextChangedListener)
         password.addTextChangedListener(afterTextChangedListener)
@@ -98,27 +98,24 @@ class RegistrationFragment : Fragment() {
 
         birthday.setOnClickListener { datePickerDialog.show() }
         binding.register.setOnClickListener {
-            viewModel.send(
-                RegistrationEvent.SaveUserEvent(
-                    firstName = firstName.text.toString(),
-                    lastName = lastName.text.toString(),
-                    password = password.text.toString(),
-                    birthday = birthday.text.toString()
-                )
+            viewModel.saveUser(
+                firstName = firstName.text.toString(),
+                lastName = lastName.text.toString(),
+                password = password.text.toString(),
+                birthday = birthday.text.toString()
             )
         }
     }
 
-    private fun handleState(state: RegistrationState) {
+
+    private fun handleRegistrationState(state: RegistrationState) {
         when (state) {
-            RegistrationState.ValidatedData -> binding.register.isEnabled = true
+            is RegistrationState.ValidatedData -> binding.register.isEnabled = state.isValidate
             is RegistrationState.Registered -> mainActivity.openGreeting(state.isRegistered)
-            is RegistrationState.Error -> showError(state)
-            is RegistrationState.Content -> binding.birthday.text = state.birthday
         }
     }
 
-    private fun showError(error: RegistrationState.Error) {
+    private fun handleErrorState(error: ErrorState) {
         binding.firstName.setError(error.firstNameError)
         binding.lastName.setError(error.lastNameError)
         binding.password.setError(error.passwordError)

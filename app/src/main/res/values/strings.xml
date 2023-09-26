@@ -8,6 +8,5 @@
     <string name="invalid_name">Allows only letters and must be between 3 and 20 characters in length</string>
     <string name="invalid_password">Requires at least 1 letter and 1 digit, with a minimum length of 4 characters</string>
     <string name="invalid_confirm_password">Password mismatch</string>
-    <string name="initial_date">Date of birth is 01.01.2023</string>
     <string name="greeting">Greeting</string>
 </resources>

@@ -53,7 +53,6 @@
             android:layout_marginTop="@dimen/margin_top_12"
             android:fontFamily="@font/montserrat_regular"
             android:gravity="start|center"
-            android:text="@string/initial_date"
             android:textColor="@color/white"
             android:textSize="@dimen/text_size_14"
             app:layout_constraintEnd_toEndOf="parent"
