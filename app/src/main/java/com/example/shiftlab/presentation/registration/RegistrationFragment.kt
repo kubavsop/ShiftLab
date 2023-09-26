@@ -53,19 +53,6 @@ class RegistrationFragment : Fragment() {
         viewModel.registrationState.observe(viewLifecycleOwner, ::handleRegistrationState)
         viewModel.birthday.observe(viewLifecycleOwner) { binding.birthday.text = it }
 
-        val afterTextChangedListener = object : TextWatcher {
-            override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
-            override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
-            override fun afterTextChanged(s: Editable) {
-                viewModel.registrationDataUpdated(
-                    firstName = firstName.text.toString(),
-                    lastName = lastName.text.toString(),
-                    password = password.text.toString(),
-                    confirmPassword = confirmPassword.text.toString()
-                )
-            }
-        }
-
 
         val calendar = Calendar.getInstance()
         val datePickerDialog = DatePickerDialog(
@@ -86,6 +73,8 @@ class RegistrationFragment : Fragment() {
         maxDateCalendar.set(MAX_YEAR, MAX_MONTH, MAX_DAY)
         datePickerDialog.datePicker.maxDate = maxDateCalendar.timeInMillis
 
+
+        val afterTextChangedListener = getAfterTextChangedListener()
         firstName.addTextChangedListener(afterTextChangedListener)
         lastName.addTextChangedListener(afterTextChangedListener)
         password.addTextChangedListener(afterTextChangedListener)
@@ -107,7 +96,6 @@ class RegistrationFragment : Fragment() {
         }
     }
 
-
     private fun handleRegistrationState(state: RegistrationState) {
         when (state) {
             is RegistrationState.ValidatedData -> binding.register.isEnabled = state.isValidate
@@ -120,6 +108,19 @@ class RegistrationFragment : Fragment() {
         binding.lastName.setError(error.lastNameError)
         binding.password.setError(error.passwordError)
         binding.confirmPassword.setError(error.confirmPasswordError)
+    }
+
+    private fun getAfterTextChangedListener() = object : TextWatcher {
+        override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {}
+        override fun afterTextChanged(s: Editable) {
+            viewModel.registrationDataUpdated(
+                firstName = binding.firstName.text.toString(),
+                lastName = binding.lastName.text.toString(),
+                password = binding.password.text.toString(),
+                confirmPassword = binding.confirmPassword.text.toString()
+            )
+        }
     }
 
     override fun onDestroyView() {
