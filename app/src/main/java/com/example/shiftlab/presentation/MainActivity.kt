@@ -31,8 +31,4 @@ class MainActivity : AppCompatActivity() {
         }
         navController.navigate(R.id.greetingFragment)
     }
-
-    fun popBackStack() {
-        navController.popBackStack()
-    }
 }
