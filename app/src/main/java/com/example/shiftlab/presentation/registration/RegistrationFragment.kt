@@ -21,6 +21,16 @@ class RegistrationFragment : Fragment() {
     private val binding get() = _binding!!
 
     private val viewModel: RegistrationViewModel by activityViewModels()
+
+
+    private companion object {
+        const val MIN_YEAR = 1880
+        const val MAX_YEAR = 2020
+        const val MIN_MONTH = 0
+        const val MIN_DAY = 1
+        const val MAX_MONTH = 11
+        const val MAX_DAY = 31
+    }
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
@@ -56,6 +66,26 @@ class RegistrationFragment : Fragment() {
         }
 
 
+        val calendar = Calendar.getInstance()
+        val datePickerDialog = DatePickerDialog(
+            requireContext(),
+            { _, year, monthOfYear, dayOfMonth ->
+                viewModel.send(RegistrationEvent.DateChangedEvent(year, monthOfYear, dayOfMonth))
+            },
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        )
+
+        val minDateCalendar = Calendar.getInstance()
+        minDateCalendar.set(MIN_YEAR, MIN_MONTH, MIN_DAY)
+        datePickerDialog.datePicker.minDate = minDateCalendar.timeInMillis
+
+        val maxDateCalendar = Calendar.getInstance()
+        maxDateCalendar.set(MAX_YEAR, MAX_MONTH, MAX_DAY)
+        datePickerDialog.datePicker.maxDate = maxDateCalendar.timeInMillis
+
+
         firstName.addTextChangedListener(afterTextChangedListener)
         lastName.addTextChangedListener(afterTextChangedListener)
         password.addTextChangedListener(afterTextChangedListener)
@@ -66,7 +96,7 @@ class RegistrationFragment : Fragment() {
         password.setClearFocusOnDoneClick()
         confirmPassword.setClearFocusOnDoneClick()
 
-        birthday.setOnClickListener { showDatePickerDialog() }
+        birthday.setOnClickListener { datePickerDialog.show() }
         binding.register.setOnClickListener {
             viewModel.send(
                 RegistrationEvent.SaveUserEvent(
@@ -93,21 +123,6 @@ class RegistrationFragment : Fragment() {
         binding.lastName.setError(error.lastNameError)
         binding.password.setError(error.passwordError)
         binding.confirmPassword.setError(error.confirmPasswordError)
-    }
-
-    private fun showDatePickerDialog() {
-        val calendar = Calendar.getInstance()
-        val datePickerDialog = DatePickerDialog(
-            requireContext(),
-            { _, year, monthOfYear, dayOfMonth ->
-                viewModel.send(RegistrationEvent.DateChangedEvent(year, monthOfYear, dayOfMonth))
-            },
-            calendar.get(Calendar.YEAR),
-            calendar.get(Calendar.MONTH),
-            calendar.get(Calendar.DAY_OF_MONTH)
-
-        )
-        datePickerDialog.show()
     }
 
     override fun onDestroyView() {

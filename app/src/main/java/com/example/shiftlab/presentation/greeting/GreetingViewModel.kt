@@ -20,7 +20,7 @@ class GreetingViewModel @Inject constructor(
         const val GREETING_START = "Hello, "
     }
 
-    fun getUser() {
+    fun setGreeting() {
         _state.value =
             GreetingState(greeting = GREETING_START + (getUserUseCase()?.firstName ?: UNKNOWN))
     }

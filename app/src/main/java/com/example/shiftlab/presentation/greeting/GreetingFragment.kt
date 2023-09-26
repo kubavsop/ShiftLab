@@ -46,7 +46,7 @@ class GreetingFragment : Fragment() {
         }
 
         binding.greetingButton.setOnClickListener {
-            viewModel.getUser()
+            viewModel.setGreeting()
             greeting.show()
         }
     }
